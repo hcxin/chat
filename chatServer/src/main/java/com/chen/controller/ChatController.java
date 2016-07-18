@@ -32,7 +32,6 @@ import com.chen.service.IPushMessageService;
 @Controller
 @RequestMapping("/chat")
 public class ChatController extends BaseController {
-	// http://120.25.243.63/qrcode/shadow/getImage?type=1
 	private static final Logger log = Logger.getLogger(ChatController.class);
 	SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
