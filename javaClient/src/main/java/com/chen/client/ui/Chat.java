@@ -92,6 +92,8 @@ public class Chat {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (channel != null) {
+					msgBuf msg = msgBuf.newBuilder().setType(EType.CLOSE.getIndex()).build();
+					channel.writeAndFlush(msg);
 					channel.eventLoop().shutdownGracefully();
 				}
 				System.exit(0);

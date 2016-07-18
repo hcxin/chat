@@ -38,13 +38,7 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		if (attributeKey != null) {
-			String uid = ctx.channel().attr(attributeKey).get();
-			log.info("ChatChannelHandler :channelInactive: uuid: [" + uid + "]");
-			if (uid != null) {
-				manager.getChannePool().remove(uid);
-			}
-		}
+		removeConnection();
 	}
 
 	@Override
@@ -75,47 +69,38 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 					.setFrom(MessageUtil.SYSTEM).setMsg(inMsg.getMsg()).build();
 			channelGroup.writeAndFlush(outMsg);
 		} else if (inMsg.getType() == EType.HEARTBEAT.getIndex()) {
-			log.info("channel HEARTBEAT");
+			log.info("HEARTBEAT!!");
+		}  else if (inMsg.getType() == EType.CLOSE.getIndex()) {
+			removeConnection();
 		} 
-
-	}
-
-	@Override
-	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 
 	}
 
 	@Override
 	public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise)
 			throws Exception {
-		log.info("channel disconnect");
-		if (!ctx.channel().isActive()) {
-			String uuid = ctx.channel().attr(attributeKey).get();
-			log.info("uuid: " + uuid);
-			if (uuid != null) {
-				manager.getChannePool().remove(uuid);
-			}
-		}
+		removeConnection();
 	}
 
-/*	@Override
+	@Override
 	public void close(ChannelHandlerContext ctx, ChannelPromise promise)
 			throws Exception {
 		log.info("ChatChannelHandler: close");
-		if (attributeKey != null) {
-			String uid = ctx.channel().attr(attributeKey).get();
-			if (uid != null) {
-				manager.getChannePool().remove(uid);
-			}
-		}
-	}*/
+		removeConnection();
+	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+		removeConnection();
 		log.info("ChatChannelHandler: exceptionCaught: hit excepition");
 		cause.printStackTrace();
 		ctx.close();
 		log.info("exceptionCaught: end");
 	}
 
+	private void removeConnection(){
+		if (uid != null) {
+			manager.getChannePool().remove(uid);
+		}
+	}
 }

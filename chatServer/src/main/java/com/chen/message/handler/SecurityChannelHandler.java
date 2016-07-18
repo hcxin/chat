@@ -56,7 +56,7 @@ public class SecurityChannelHandler extends ChannelHandlerAdapter {
     		}
     }
     
-	@Override
+/*	@Override
 	public void close(ChannelHandlerContext ctx, ChannelPromise promise)
 			throws Exception {
 		log.info("SecurityChannelHandler: close");
@@ -66,7 +66,7 @@ public class SecurityChannelHandler extends ChannelHandlerAdapter {
 				manager.getChannePool().remove(uid);
 			}
 		}
-	}
+	}*/
     
 	private void setUserCannel(ChannelHandlerContext ctx) {
 		ctx.channel().attr(attributeKey).set(uid);
