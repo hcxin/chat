@@ -35,5 +35,4 @@ public enum EType {
 	public void setIndex(Integer index) {
 		this.index = index;
 	}
-
 }
