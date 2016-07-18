@@ -52,10 +52,10 @@ public class ChatController extends BaseController {
 			for (String key : uuidKeySet) {
 				UserChannelInfo ucInfo = manager.getChannePool().get(key);
 				Channel channel = ucInfo.getChannel();
-				//String sysMsg = MessageUtil.formatMsg(MessageUtil.SYSTEM, message.getContent());
-				
-				msgBuf outMsg = msgBuf.newBuilder().setType(EType.SYS.getIndex())
-						.setFrom(MessageUtil.SYSTEM).setMsg(message.getContent()).build();
+				msgBuf outMsg = msgBuf.newBuilder()
+						.setType(EType.SYS.getIndex())
+						.setFrom(MessageUtil.SYSTEM)
+						.setMsg(message.getContent()).build();
 				channel.writeAndFlush(outMsg);
 			}
 		}
@@ -66,17 +66,19 @@ public class ChatController extends BaseController {
 	@RequestMapping("/pushMessageToSingle")
 	@ResponseBody
 	public int pushMessageToSingle(@RequestBody Message message) {
-		String sysMsg = null;
 		int count = 0;
 		if (message != null && StringUtils.isNotEmpty(message.getContent())) {
-			sysMsg = MessageUtil.formatMsg(MessageUtil.SYSTEM, message.getContent());
-		}
-
-		if (sysMsg != null && message.getUserId() != null) {
-			UserChannelInfo ucInfo = manager.getChannePool().get(message.getUserId());
-			Channel channel = ucInfo.getChannel();
-			channel.writeAndFlush(sysMsg);
-			count = 1;
+			if (message.getUserId() != null) {
+				UserChannelInfo ucInfo = manager.getChannePool().get(
+						message.getUserId());
+				Channel channel = ucInfo.getChannel();
+				msgBuf outMsg = msgBuf.newBuilder()
+						.setType(EType.SYS.getIndex())
+						.setFrom(MessageUtil.SYSTEM)
+						.setMsg(message.getContent()).build();
+				channel.writeAndFlush(outMsg);
+				count = 1;
+			}
 		}
 		return count;
 

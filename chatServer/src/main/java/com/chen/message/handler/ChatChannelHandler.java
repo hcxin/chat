@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.chen.common.EType;
+import com.chen.common.MessageUtil;
 import com.chen.common.proto.MsgBuf;
 import com.chen.common.proto.MsgBuf.msgBuf;
 import com.chen.message.manager.ChannelManager;
@@ -71,7 +72,7 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 			channelGroup.writeAndFlush(outMsg);
 		} else if (inMsg.getType() == EType.SYS.getIndex()) {
 			msgBuf outMsg = msgBuf.newBuilder().setType(EType.SYS.getIndex())
-					.setFrom(from).setMsg(inMsg.getMsg()).build();
+					.setFrom(MessageUtil.SYSTEM).setMsg(inMsg.getMsg()).build();
 			channelGroup.writeAndFlush(outMsg);
 		}
 

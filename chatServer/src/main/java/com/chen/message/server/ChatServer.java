@@ -47,7 +47,7 @@ public class ChatServer {
 
 			ChannelFuture f = serverBootstrap.bind().sync();
 			log.info(ChatServer.class.getName()
-					+ "PushServer started and listen on:" + f.channel().localAddress());
+					+ "started and listen on:" + f.channel().localAddress());
 			f.channel().closeFuture().sync();
 		} finally {
 			group.shutdownGracefully().sync();
