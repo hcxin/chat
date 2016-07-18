@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+                http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<mvc:annotation-driven />          <!-- 开启注解 -->
+	<aop:config proxy-target-class="true"></aop:config> <!-- for shiro annotations -->
+<!-- 	<context:component-scan base-package="com.chen">指定扫描注解的包路径
+	</context:component-scan> -->
+	   <context:component-scan base-package="com.chen" use-default-filters="false">
+           <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+           <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+   </context:component-scan>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"></bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"></bean>
+	<bean class="com.chen.listener.OnStartListener"></bean> <!-- 容器启动会自动执行该类的onApplicationEvent 方法-->
+	<mvc:default-servlet-handler />  <!-- 处理静态资源 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">    <!-- 定义视图解析器 -->
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource"
+		p:basename="i18n/messages" />
+
+
+<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    redirect:/login/unauthenticated
+                </prop>
+                 <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    redirect:/login/unauthorized
+                </prop>
+            </props>
+        </property>
+    </bean>
+</beans>
