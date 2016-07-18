@@ -33,7 +33,6 @@ import com.chen.service.IPushMessageService;
 @RequestMapping("/chat")
 public class ChatController extends BaseController {
 	private static final Logger log = Logger.getLogger(ChatController.class);
-	SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Autowired
 	ChannelManager manager;
