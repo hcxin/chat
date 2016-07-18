@@ -13,6 +13,7 @@ import com.chen.message.manager.ChannelManager;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.util.AttributeKey;
 
@@ -54,6 +55,18 @@ public class SecurityChannelHandler extends ChannelHandlerAdapter {
     			}
     		}
     }
+    
+	@Override
+	public void close(ChannelHandlerContext ctx, ChannelPromise promise)
+			throws Exception {
+		log.info("SecurityChannelHandler: close");
+		if (attributeKey != null) {
+			String uid = ctx.channel().attr(attributeKey).get();
+			if (uid != null) {
+				manager.getChannePool().remove(uid);
+			}
+		}
+	}
     
 	private void setUserCannel(ChannelHandlerContext ctx) {
 		ctx.channel().attr(attributeKey).set(uid);

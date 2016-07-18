@@ -60,8 +60,8 @@ public class ChatServer {
 		protected void initChannel(SocketChannel ch) throws Exception {
 			ch.pipeline().addLast(new ProtobufDecoder(msgBuf.getDefaultInstance()));
 			ch.pipeline().addLast(new ProtobufEncoder());
-/*			ch.pipeline().addLast(new IdleStateHandler(0, 0, 600, TimeUnit.SECONDS));
-			ch.pipeline().addLast(new HeartbeatChannelHandler());*/
+			ch.pipeline().addLast(new IdleStateHandler(25, 15, 10, TimeUnit.SECONDS));
+			ch.pipeline().addLast(new HeartbeatChannelHandler());
 			
 			ch.pipeline().addLast(new SecurityChannelHandler(manager, channelGroup));
 			ch.pipeline().addLast(new ChatChannelHandler(manager, channelGroup));

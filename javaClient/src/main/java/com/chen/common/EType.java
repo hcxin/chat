@@ -1,7 +1,7 @@
 package com.chen.common;
 
 public enum EType {
-	ACTIVE("active", 0), PTP("point-to-point", 1),PS("publish-subscribe", 2),SYS("system", 3), INACTIVE("inactive", 4);
+	ACTIVE("active", 0), PTP("point-to-point", 1),PS("publish-subscribe", 2),SYS("system", 3), INACTIVE("inactive", 4), HEARTBEAT("heartbeat", 5);
 
 	private String name;
 	private Integer index;

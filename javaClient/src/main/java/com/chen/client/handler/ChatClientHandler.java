@@ -1,5 +1,4 @@
 /**
- * Copyright(C) 2016.Haichen Xin. All Rights Reserved.
  * @author: Haichen Xin
  */
 package com.chen.client.handler;
@@ -12,6 +11,7 @@ import com.chen.common.MessageUtil;
 import com.chen.common.proto.MsgBuf;
 import com.chen.common.proto.MsgBuf.msgBuf;
 
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -35,6 +35,7 @@ public class ChatClientHandler extends ChannelHandlerAdapter {
 			throws Exception {
 		if (msg != null) {
 			MsgBuf.msgBuf inMsg = (MsgBuf.msgBuf) msg;
+			if (!(inMsg.getType()==EType.HEARTBEAT.getIndex())){
 			final String msgStr = MessageUtil.formatMsg(inMsg.getFrom(), inMsg.getMsg());
 			System.out.println("server said: " + msgStr);
 			
@@ -46,13 +47,17 @@ public class ChatClientHandler extends ChannelHandlerAdapter {
 				    
 				    }  
 				}); 
+			} else {
+    			msgBuf heartbeatMsg = msgBuf.newBuilder().setType(EType.HEARTBEAT.getIndex()).build();
+    			ctx.channel().writeAndFlush(heartbeatMsg);
+			}
 		}
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		cause.printStackTrace(); // 5
+		cause.printStackTrace();
 		ctx.close();
 	}
 }

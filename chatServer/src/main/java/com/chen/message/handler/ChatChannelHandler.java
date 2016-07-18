@@ -74,7 +74,9 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 			msgBuf outMsg = msgBuf.newBuilder().setType(EType.SYS.getIndex())
 					.setFrom(MessageUtil.SYSTEM).setMsg(inMsg.getMsg()).build();
 			channelGroup.writeAndFlush(outMsg);
-		}
+		} else if (inMsg.getType() == EType.HEARTBEAT.getIndex()) {
+			log.info("channel HEARTBEAT");
+		} 
 
 	}
 
@@ -96,7 +98,7 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 		}
 	}
 
-	@Override
+/*	@Override
 	public void close(ChannelHandlerContext ctx, ChannelPromise promise)
 			throws Exception {
 		log.info("ChatChannelHandler: close");
@@ -106,7 +108,7 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 				manager.getChannePool().remove(uid);
 			}
 		}
-	}
+	}*/
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
