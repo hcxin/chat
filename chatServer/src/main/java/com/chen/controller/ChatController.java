@@ -56,7 +56,7 @@ public class ChatController extends BaseController {
 				
 				msgBuf outMsg = msgBuf.newBuilder().setType(EType.SYS.getIndex())
 						.setFrom(MessageUtil.SYSTEM).setMsg(message.getContent()).build();
-				channel.writeAndFlush(sysMsg);
+				channel.writeAndFlush(outMsg);
 			}
 		}
 		return count;
