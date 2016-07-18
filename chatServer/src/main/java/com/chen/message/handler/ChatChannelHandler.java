@@ -65,7 +65,7 @@ public class ChatChannelHandler extends ChannelHandlerAdapter {
 						.setMsg(inMsg.getMsg()).build();
 				manager.getChannePool().get(to).getChannel()
 						.writeAndFlush(outMsg);
-			}
+			} 
 		} else if (inMsg.getType() == EType.PS.getIndex()) {
 			msgBuf outMsg = msgBuf.newBuilder().setType(EType.PS.getIndex())
 					.setFrom(from).setMsg(inMsg.getMsg()).build();
