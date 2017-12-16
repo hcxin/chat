@@ -7,6 +7,6 @@ netty5 实现聊天室
 
 2.javaClient：java swing 图形界面客户端。
 
-3.AndroidClient：android客户端。
+3.AndroidClient：android客户端（没传）。
 
 4.使用protobuf传输数据。
